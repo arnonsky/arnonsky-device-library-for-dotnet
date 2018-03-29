@@ -12,14 +12,15 @@
     <PackageId>ArnonSky.Clients.Device</PackageId>
     <PackageVersion>1.0.0-alpha1</PackageVersion>
     <Title>Arnon Sky Device Library</Title>
-    <Description>Arnon Sky Device Library implements Arnon Sky REST API for easy integration of Industrial Internet devices to Arnon Sky IIoT platform.</Description>
+    <Description>SDK that makes it easy to integrate your Industrial Internet devices to Arnon Sky platform.</Description>
     <Authors>ARNON Solutions Oy</Authors>
     <Copyright>Copyright © ARNON Solutions Oy 2018</Copyright>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageLicenseUrl>https://github.com/arnonsky/arnonsky-device-library-for-dotnet/blob/master/LICENSE.txt</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/arnonksy/arnonsky-device-library-for-dotnet</PackageProjectUrl>
-    <PackageIconUrl>https://arnonsky.com/favicon-64x64.png</PackageIconUrl>
-    <PackageTags>arnonsky;IoT;IIoT;IoT device;IIoT device;Arnon;Arnon Sky</PackageTags>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/arnonsky/arnonsky-device-library-for-dotnet/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/arnonsky/arnonsky-device-library-for-dotnet</PackageProjectUrl>
+    <PackageTags>arnonsky;Industrial Internet;IoT;IIoT;IoT device;IIoT device;Arnon;Arnon Sky;SDK</PackageTags>
+    <RepositoryUrl>https://github.com/arnonsky/arnonsky-device-library-for-dotnet.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
