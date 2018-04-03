@@ -162,7 +162,7 @@ namespace ArnonSky.Clients.Device
         /// <returns></returns>
         public async Task SimpleSendDataAsync(string sourceName, DateTime timestamp, List<TagValue> itemValues)
         {
-            await RefreshConfigurationAsync().ConfigureAwait(false);
+            await RefreshConfigurationAsync(TimeSpan.FromSeconds(300)).ConfigureAwait(false);
 
             var siteId = GetSiteId();
             var sourceId = GetSourceId(sourceName);
@@ -248,18 +248,8 @@ namespace ArnonSky.Clients.Device
         }
 
 
-        private async Task RefreshConfigurationAsync(TimeSpan? configurationRefreshInterval = null)
+        private async Task RefreshConfigurationAsync(TimeSpan configurationRefreshInterval)
         {
-            if (!configurationRefreshInterval.HasValue)
-            {
-                configurationRefreshInterval = TimeSpan.FromSeconds(300);
-            }
-
-            if (configurationRefreshInterval.Value.TotalSeconds < 15)
-            {
-                configurationRefreshInterval = TimeSpan.FromSeconds(15);
-            }
-
             // limit rate of configuration requests to one per minInterval
             if (DateTime.UtcNow.Subtract(_configuration.ReadTimestamp) > configurationRefreshInterval)
             {
