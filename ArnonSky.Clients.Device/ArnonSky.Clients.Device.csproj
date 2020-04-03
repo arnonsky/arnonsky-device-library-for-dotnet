@@ -16,7 +16,7 @@
     <Authors>ARNON Solutions Oy</Authors>
     <Copyright>Copyright © ARNON Solutions Oy 2018</Copyright>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/arnonsky/arnonsky-device-library-for-dotnet/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/arnonsky/arnonsky-device-library-for-dotnet</PackageProjectUrl>
     <PackageTags>arnonsky;Industrial Internet;IoT;IIoT;IoT device;IIoT device;Arnon;Arnon Sky;SDK</PackageTags>
     <RepositoryUrl>https://github.com/arnonsky/arnonsky-device-library-for-dotnet.git</RepositoryUrl>
