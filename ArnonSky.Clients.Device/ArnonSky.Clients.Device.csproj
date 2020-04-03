@@ -10,7 +10,7 @@
 
   <PropertyGroup>
     <PackageId>ArnonSky.Clients.Device</PackageId>
-    <PackageVersion>1.0.0-alpha2</PackageVersion>
+    <PackageVersion>1.0.0-alpha3</PackageVersion>
     <Title>Arnon Sky Device Library</Title>
     <Description>SDK that makes it easy to integrate your Industrial Internet devices to Arnon Sky platform.</Description>
     <Authors>ARNON Solutions Oy</Authors>
