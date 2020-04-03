@@ -3,7 +3,7 @@
 
 namespace ArnonSky.Clients.Device.Models
 {
-    public class PostDeviceModel
+    class PostDeviceModel
     {
         public PostDeviceModel(string provisioningKey, string productKey, string deviceType)
         {

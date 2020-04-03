@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ArnonSky.Clients.Device.Models;
+using ArnonSky.Clients.Device.Configuration;
 
 namespace ArnonSky.Clients.Device
 {
-    class DeviceConfiguration
+    class DeviceConfigurationContainer
     {
         public DateTime ReadTimestamp { get; set; }
 
-        public GetDeviceDetailsModel Current { get; set; }
+        public DeviceConfiguration Current { get; set; }
     }
 }

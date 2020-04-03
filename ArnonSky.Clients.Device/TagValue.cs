@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArnonSky.Clients.Device.Models
+namespace ArnonSky.Clients.Device
 {
     public class TagValue
     {

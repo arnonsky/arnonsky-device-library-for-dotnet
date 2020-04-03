@@ -15,7 +15,7 @@ namespace ArnonSky.Clients.Device
     /// </summary>
     public class MultipleDataRowContainer
     {
-        private Dictionary<DateTime, object[]> _data = new Dictionary<DateTime, object[]>();
+        private readonly Dictionary<DateTime, object[]> _data = new Dictionary<DateTime, object[]>();
 
         public MultipleDataRowContainer()
         {
@@ -61,7 +61,7 @@ namespace ArnonSky.Clients.Device
             _data[timestamp] = valuesArray;
         }
 
-        public IEnumerable<PostDataModel> ToDataPostModel() 
+        internal IEnumerable<PostDataModel> ToDataPostModel() 
             => _data.Select(entry => new PostDataModel(entry.Key.ToString("o"), entry.Value));
 
     }

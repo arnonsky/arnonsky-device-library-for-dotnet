@@ -5,7 +5,7 @@ namespace ArnonSky.Clients.Device.Models
 {
     class DeviceSaveModel
     {
-        public string ProducKey { get; set; }
+        public string ProductKey { get; set; }
 
         public byte[] ProtectedAccessKey { get; set; }
 

@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace ArnonSky.Clients.Device
 {
-    public static class Security
+    static class Security
     {
         /// <summary>
         /// Function that may be used to protect data under the current user profile

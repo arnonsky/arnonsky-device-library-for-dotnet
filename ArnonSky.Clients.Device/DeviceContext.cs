@@ -1,6 +1,7 @@
 ﻿// Copyright (c) ARNON Solutions Oy. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the root for license information.
 
+using ArnonSky.Clients.Device.Configuration;
 using ArnonSky.Clients.Device.Exceptions;
 using ArnonSky.Clients.Device.Models;
 using Newtonsoft.Json;
@@ -27,7 +28,7 @@ namespace ArnonSky.Clients.Device
         private readonly byte[] _protectedAccessKey;
         private readonly string _apiBaseAddress;
         private readonly ApiClient _apiClient;
-        private DeviceConfiguration _configuration;
+        private DeviceConfigurationContainer _configuration;
 
         public string ProductKey { get; }
 
@@ -50,7 +51,7 @@ namespace ArnonSky.Clients.Device
             _protectedAccessKey = Security.ProtectData(accessKey);
             _apiBaseAddress = apiBaseAddress;
             _apiClient = new ApiClient(productKey, accessKey, apiBaseAddress);
-            _configuration = new DeviceConfiguration();
+            _configuration = new DeviceConfigurationContainer();
 
             void ValidateProductKey()
             {
@@ -76,7 +77,7 @@ namespace ArnonSky.Clients.Device
             try
             {
                 var deviceSaveModel = JsonConvert.DeserializeObject<DeviceSaveModel>(json);
-                return new DeviceContext(deviceSaveModel.ProducKey, Security.UnprotectData(deviceSaveModel.ProtectedAccessKey), deviceSaveModel.ApiBaseAddress);
+                return new DeviceContext(deviceSaveModel.ProductKey, Security.UnprotectData(deviceSaveModel.ProtectedAccessKey), deviceSaveModel.ApiBaseAddress);
             }
             catch (Exception)
             {
@@ -91,7 +92,7 @@ namespace ArnonSky.Clients.Device
         {
             var deviceSaveModel = new DeviceSaveModel()
             {
-                ProducKey = ProductKey,
+                ProductKey = ProductKey,
                 ProtectedAccessKey = _protectedAccessKey,
                 ApiBaseAddress = _apiBaseAddress
             };
@@ -160,7 +161,7 @@ namespace ArnonSky.Clients.Device
         /// <param name="timestamp">Timestamp of the data.</param>
         /// <param name="itemValues">Data values of items</param>
         /// <returns></returns>
-        public async Task SimpleSendDataAsync(string sourceName, DateTime timestamp, List<TagValue> itemValues)
+        public async Task SimpleSendDataAsync(string sourceName, DateTime timestamp, IEnumerable<TagValue> itemValues)
         {
             await RefreshConfigurationAsync(TimeSpan.FromSeconds(300)).ConfigureAwait(false);
 
@@ -168,11 +169,12 @@ namespace ArnonSky.Clients.Device
             var sourceId = GetSourceId(sourceName);
 
             // convert itemValues to array of values that is required by the API
-            var itemIndices = new int?[itemValues.Count];
+            var itemIndices = new List<int?>();
             var maxIndex = -1;
-            for (var i = 0; i < itemValues.Count; i++)
+            int i = -1;
+            foreach (var value in itemValues)
             {
-                var value = itemValues[i];
+                i += 1;
                 var itemIndex = TryGetItemIndexFromConfiguration(sourceId, value.TagName);
                 if (itemIndex.HasValue)
                 {
@@ -182,11 +184,14 @@ namespace ArnonSky.Clients.Device
             }
 
             var itemSendValues = new object[maxIndex + 1];
-            for (var i = 0; i < itemValues.Count; i++)
+
+            i = -1;
+            foreach (var value in itemValues)
             {
+                i += 1;
                 if (itemIndices[i].HasValue)
                 {
-                    itemSendValues[itemIndices[i].Value] = itemValues[i].Value;
+                    itemSendValues[itemIndices[i].Value] = value.Value;
                 }
             }
 
@@ -202,7 +207,7 @@ namespace ArnonSky.Clients.Device
         /// Retrieves the configuration of the device. Configuration is cached for 15 seconds to protect API from too many configuration requests.
         /// </summary>
         /// <returns>The device configuration model</returns>
-        public async Task<GetDeviceDetailsModel> GetConfigurationAsync()
+        public async Task<DeviceConfiguration> GetConfigurationAsync()
         {
             if (DateTime.UtcNow.Subtract(_configuration.ReadTimestamp) > TimeSpan.FromSeconds(15))
             {
@@ -226,8 +231,6 @@ namespace ArnonSky.Clients.Device
             await _apiClient.SendRequestAsync(HttpMethod.Post, $"sites/{siteId}/sources/{sourceId}/data", model).ConfigureAwait(false);
         }
 
-
-
         /// <summary>
         /// Posts multiple rows of data to the Arnon Sky API.
         /// </summary>
@@ -243,7 +246,7 @@ namespace ArnonSky.Clients.Device
 
         private void UpdateConfiguration(GetDeviceDetailsModel newConfiguration)
         {
-            var replaceConf = new DeviceConfiguration() { ReadTimestamp = DateTime.UtcNow, Current = newConfiguration };
+            var replaceConf = new DeviceConfigurationContainer() { ReadTimestamp = DateTime.UtcNow, Current = newConfiguration.ToDeviceConfiguration() };
             Interlocked.Exchange(ref _configuration, replaceConf);
         }
 
@@ -282,7 +285,7 @@ namespace ArnonSky.Clients.Device
 
         private int? TryGetItemIndexFromConfiguration(long sourceId, string tagname)
         {
-            GetDeviceSourceDetailsModel source = null;
+            SourceConfiguration source = null;
             for (var i = 0; i < _configuration.Current.Sources.Count; i++)
             {
                 if (_configuration.Current.Sources[i].SourceId == sourceId)

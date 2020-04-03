@@ -1,12 +1,13 @@
 ﻿// Copyright (c) ARNON Solutions Oy. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the root for license information.
 
+using ArnonSky.Clients.Device.Configuration;
 using System;
 using System.Collections.Generic;
 
 namespace ArnonSky.Clients.Device.Models
 {
-    public class GetDeviceSourceDetailsModel
+    class GetDeviceSourceDetailsModel
     {
         public long? ParentId { get; set; }
 
@@ -20,5 +21,7 @@ namespace ArnonSky.Clients.Device.Models
 
         public DateTime ItemsEditedTimestamp { get; set; }
 
+        internal SourceConfiguration ToSourceConfiguration()
+            => new SourceConfiguration() { Description = Description, Items = Items, ItemsEditedTimestamp = ItemsEditedTimestamp, Name = Name, ParentId = ParentId, SourceId = SourceId };
     }
 }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ArnonSky.Clients.Device.Models
 {
-    public class PostDataModel
+    class PostDataModel
     {
         public PostDataModel(string timestamp, IEnumerable<object> list)
         {

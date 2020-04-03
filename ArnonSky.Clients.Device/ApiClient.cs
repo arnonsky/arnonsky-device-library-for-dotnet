@@ -14,7 +14,7 @@ namespace ArnonSky.Clients.Device
     /// <summary>
     /// Class that DeviceContext uses for communication with Arnon Sky API using the HTTP protocol.
     /// </summary>
-    public class ApiClient
+    class ApiClient
     {
         private const string AuthScheme = "Device";
 
