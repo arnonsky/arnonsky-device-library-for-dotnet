@@ -171,21 +171,23 @@ namespace ArnonSky.Clients.Device
             // convert itemValues to array of values that is required by the API
             var itemIndices = new List<int?>();
             var maxIndex = -1;
-            int i = -1;
             foreach (var value in itemValues)
             {
-                i += 1;
                 var itemIndex = TryGetItemIndexFromConfiguration(sourceId, value.TagName);
                 if (itemIndex.HasValue)
                 {
-                    itemIndices[i] = itemIndex;
+                    itemIndices.Add(itemIndex);
                     maxIndex = Math.Max(maxIndex, itemIndex.Value);
+                }
+                else
+                {
+                    itemIndices.Add(null);
                 }
             }
 
             var itemSendValues = new object[maxIndex + 1];
 
-            i = -1;
+            int i = -1;
             foreach (var value in itemValues)
             {
                 i += 1;
